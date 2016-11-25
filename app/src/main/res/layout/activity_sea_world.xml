@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_sea_world"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context="ru.turubarov.seaworld.activities.SeaWorldActivity">
+
+    <GridView
+        android:id="@+id/seaWorldGrid"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="bottom"
+        android:stretchMode="columnWidth"
+        android:layout_weight="1"
+        >
+    </GridView>
+
+    <Button
+        android:text="@string/restart"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/restartButton"
+        android:layout_weight="9"/>
+
+</LinearLayout>
