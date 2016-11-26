@@ -1,52 +1,50 @@
 package ru.turubarov.seaworld.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 /**
  * Created by Александр on 22.11.2016.
  */
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 
 import ru.turubarov.seaworld.R;
 import ru.turubarov.seaworld.animals.Animal;
 import ru.turubarov.seaworld.animals.Orca;
-import ru.turubarov.seaworld.animals.Tux;
+import ru.turubarov.seaworld.animals.Penguin;
+import ru.turubarov.seaworld.data.Settings;
 
+/**
+ * Адаптер для отображения игрового мира в таблице на экране
+ */
 public class SeaWorldAdapter extends BaseAdapter {
-    private Context mContext;
-    private GridView myGv;
-    private Animal[][] organisms;
+    private Context context;
+    private GridView gridView;
+    private Animal[][] animals;
 
-    public SeaWorldAdapter(Context c, GridView gv, Animal[][] org) {
-        int test = c.getResources().getInteger(R.integer.num_of_collumns);
-        mContext = c;
-        this.myGv = gv;
-        this.organisms = org;
+    private int numOfColumns;
+    private int numOfRows;
+
+    public SeaWorldAdapter(Context context, GridView gridView, Animal[][] animals) {
+        this.context = context;
+        this.gridView = gridView;
+        this.animals = animals;
+
+        this.numOfColumns = Settings.getInstance().getNumOfColumns();
+        this.numOfRows = Settings.getInstance().getNumOfRows();
     }
 
     public int getCount() {
-        return 15*10;
+        return numOfColumns * numOfRows;
     }
 
     public Object getItem(int position) {
-        return organisms[position%10][(int)(position/10)];
+        return animals[position % numOfColumns][(int)(position / numOfColumns)];
     }
 
     public long getItemId(int position) {
@@ -58,23 +56,23 @@ public class SeaWorldAdapter extends BaseAdapter {
         ImageView imageView;
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
-            imageView = new ImageView(mContext);
+            imageView = new ImageView(context);
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             imageView.setPadding(8, 8, 8, 8);
         } else {
             imageView = (ImageView) convertView;
         }
-        if (organisms[position%15][(int)(position/15)] instanceof Orca)
+        if (animals[position % numOfColumns][(int)(position / numOfColumns)] instanceof Orca)
 
             imageView.setImageResource(R.drawable.orca);
-        else if (organisms[position%15][(int)(position/15)] instanceof Tux)
+        else if (animals[position % numOfColumns][(int)(position / numOfColumns)] instanceof Penguin)
             imageView.setImageResource(R.drawable.tux);
         else
             imageView.setImageResource(0);
 
         AbsListView.LayoutParams param = new AbsListView.LayoutParams(
                 android.view.ViewGroup.LayoutParams.FILL_PARENT,
-                myGv.getHeight()/10);
+                gridView.getHeight() / numOfRows);
         imageView.setLayoutParams(param);
 
         return imageView;
