@@ -121,6 +121,8 @@ public class AnimalMatrix {
     public Penguin searchFood(Orca orca) {
         int curX = orca.position.x;
         int curY = orca.position.y;
+        ArrayList<Penguin> foods = new ArrayList<Penguin>();
+        Random rand = new Random();
         // в цикле ищем пингвина на съедение неподалёку от косатки orca
         for (int j = 0; j < 3; j++) {
             for (int k = 0; k < 3; k++) {
@@ -128,10 +130,14 @@ public class AnimalMatrix {
                         && curX + j - 1 >= 0 && curX + j - 1 < numOfColumns
                         && curY + k - 1 >= 0 && curY + k - 1 < numOfRows) {
                     if (animals[curX + j - 1][curY + k - 1] instanceof Penguin) {
-                        return (Penguin) animals[curX + j - 1][curY + k - 1];
+                        foods.add((Penguin)animals[curX + j - 1][curY + k - 1]);
                     }
                 }
             }
+        }
+        // если пингвины неподалёку найдены, выбираем случайного
+        if (foods.size() > 0) {
+            return foods.get(rand.nextInt(foods.size()));
         }
         return null;
     }
