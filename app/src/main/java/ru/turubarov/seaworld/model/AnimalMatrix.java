@@ -1,13 +1,15 @@
-package ru.turubarov.seaworld.data;
+package ru.turubarov.seaworld.model;
 
 import android.graphics.Point;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import ru.turubarov.seaworld.animals.Animal;
-import ru.turubarov.seaworld.animals.Orca;
-import ru.turubarov.seaworld.animals.Penguin;
+import ru.turubarov.seaworld.enums.AnimalTypes;
+import ru.turubarov.seaworld.factories.AnimalFactory;
+import ru.turubarov.seaworld.model.animals.Animal;
+import ru.turubarov.seaworld.model.animals.Orca;
+import ru.turubarov.seaworld.model.animals.Penguin;
 
 /**
  * Класс хранит ссылки на всех животных в двумерной матрице

@@ -1,10 +1,10 @@
-package ru.turubarov.seaworld.animals;
+package ru.turubarov.seaworld.model.animals;
 
 import android.graphics.Point;
 import java.util.Random;
 
-import ru.turubarov.seaworld.data.AnimalMatrix;
-import ru.turubarov.seaworld.data.Settings;
+import ru.turubarov.seaworld.model.AnimalMatrix;
+import ru.turubarov.seaworld.settings.SettingsOfSeaWorld;
 
 /**
  * Created by Александр on 22.11.2016.
@@ -29,9 +29,9 @@ public class Animal {
         isDead = false;
 
         if (this instanceof Penguin) {
-            timeBetweenReproduction = Settings.getInstance().getReproductionRateOfPenguin();
+            timeBetweenReproduction = SettingsOfSeaWorld.getInstance().getReproductionRateOfPenguin();
         } else if (this instanceof Orca) {
-            timeBetweenReproduction = Settings.getInstance().getReproductionRateOfOrca();
+            timeBetweenReproduction = SettingsOfSeaWorld.getInstance().getReproductionRateOfOrca();
         }
     }
 

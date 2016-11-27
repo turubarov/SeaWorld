@@ -14,10 +14,10 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import ru.turubarov.seaworld.R;
-import ru.turubarov.seaworld.animals.Animal;
-import ru.turubarov.seaworld.animals.Orca;
-import ru.turubarov.seaworld.animals.Penguin;
-import ru.turubarov.seaworld.data.Settings;
+import ru.turubarov.seaworld.model.animals.Animal;
+import ru.turubarov.seaworld.model.animals.Orca;
+import ru.turubarov.seaworld.model.animals.Penguin;
+import ru.turubarov.seaworld.settings.SettingsOfSeaWorld;
 
 /**
  * Адаптер для отображения игрового мира в таблице на экране
@@ -35,8 +35,8 @@ public class SeaWorldAdapter extends BaseAdapter {
         this.gridView = gridView;
         this.animals = animals;
 
-        this.numOfColumns = Settings.getInstance().getNumOfColumns();
-        this.numOfRows = Settings.getInstance().getNumOfRows();
+        this.numOfColumns = SettingsOfSeaWorld.getInstance().getNumOfColumns();
+        this.numOfRows = SettingsOfSeaWorld.getInstance().getNumOfRows();
     }
 
     public int getCount() {

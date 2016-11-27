@@ -1,8 +1,10 @@
-package ru.turubarov.seaworld.data;
+package ru.turubarov.seaworld.factories;
 
-import ru.turubarov.seaworld.animals.Animal;
-import ru.turubarov.seaworld.animals.Orca;
-import ru.turubarov.seaworld.animals.Penguin;
+import ru.turubarov.seaworld.enums.AnimalTypes;
+import ru.turubarov.seaworld.model.AnimalMatrix;
+import ru.turubarov.seaworld.model.animals.Animal;
+import ru.turubarov.seaworld.model.animals.Orca;
+import ru.turubarov.seaworld.model.animals.Penguin;
 
 /**
  * Created by Александр on 25.11.2016.
@@ -32,4 +34,4 @@ public class AnimalFactory {
     }
 }
 
-enum AnimalTypes {ORCA, TUX};
+;

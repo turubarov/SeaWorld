@@ -1,6 +1,6 @@
-package ru.turubarov.seaworld.animals;
+package ru.turubarov.seaworld.model.animals;
 
-import ru.turubarov.seaworld.data.AnimalMatrix;
+import ru.turubarov.seaworld.model.AnimalMatrix;
 
 /**
  * Created by Александр on 22.11.2016.

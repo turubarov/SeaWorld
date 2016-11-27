@@ -5,7 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context="ru.turubarov.seaworld.activities.SeaWorldActivity">
+    tools:context="ru.turubarov.seaworld.view.SeaWorldActivity">
 
     <GridView
         android:id="@+id/seaWorldGrid"

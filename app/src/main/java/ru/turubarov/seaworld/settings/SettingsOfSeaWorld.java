@@ -1,4 +1,4 @@
-package ru.turubarov.seaworld.data;
+package ru.turubarov.seaworld.settings;
 
 import android.content.Context;
 
@@ -7,10 +7,10 @@ import ru.turubarov.seaworld.R;
 /**
  * Created by Александр on 26.11.2016.
  */
-public class Settings {
-    private static Settings ourInstance = new Settings();
+public class SettingsOfSeaWorld {
+    private static SettingsOfSeaWorld ourInstance = new SettingsOfSeaWorld();
 
-    public static Settings getInstance() {
+    public static SettingsOfSeaWorld getInstance() {
         return ourInstance;
     }
 
@@ -64,7 +64,7 @@ public class Settings {
         liveWithoutEat = context.getResources().getInteger(R.integer.live_without_eat);
     }
 
-    private Settings() {
+    private SettingsOfSeaWorld() {
 
     }
 }
