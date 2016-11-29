@@ -8,6 +8,10 @@ import ru.turubarov.seaworld.settings.SettingsOfSeaWorld;
  */
 
 public class Orca extends Animal {
+
+    /*
+    todo вопрос: модификаторы доступа
+     */
     public int timeAfterEat;
 
     public Orca(AnimalMatrix matrix) {

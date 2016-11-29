@@ -27,6 +27,9 @@ public class AnimalFactory {
                 newAnimal = new Penguin(this.matrix);
                 break;
             default:
+                /*
+                TODO factory возврящает null... странный кейс. что знаешь про ecxeptions?
+                 */
                 newAnimal = null;
                 break;
         }

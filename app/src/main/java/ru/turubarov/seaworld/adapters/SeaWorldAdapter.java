@@ -35,6 +35,9 @@ public class SeaWorldAdapter extends BaseAdapter {
         this.gridView = gridView;
         this.animals = animals;
 
+        /*
+        TODO зачем у настроек просить размеры? массив animals разве не дает эту информацию?
+         */
         this.numOfColumns = SettingsOfSeaWorld.getInstance().getNumOfColumns();
         this.numOfRows = SettingsOfSeaWorld.getInstance().getNumOfRows();
     }
@@ -62,6 +65,11 @@ public class SeaWorldAdapter extends BaseAdapter {
         } else {
             imageView = (ImageView) convertView;
         }
+        /*
+        todo 1. вроде ж специально метод getItem сделал для такой лыжы "animals[position % numOfColumns][(int)(position / numOfColumns)]"...
+        todo 2. почему instanceof? есть альтернативы?
+        todo 3. от этого "свича" вообще можно избавиться. есть мысли как?
+         */
         if (animals[position % numOfColumns][(int)(position / numOfColumns)] instanceof Orca)
 
             imageView.setImageResource(R.drawable.orca);

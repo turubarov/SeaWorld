@@ -10,6 +10,10 @@ import ru.turubarov.seaworld.R;
 public class SettingsOfSeaWorld {
     private static SettingsOfSeaWorld ourInstance = new SettingsOfSeaWorld();
 
+
+    /*
+    todo общий вопрос по синглтонам: зачем нужны? когда можно использовать, когда нельзя? потокобезопасность
+     */
     public static SettingsOfSeaWorld getInstance() {
         return ourInstance;
     }
@@ -53,8 +57,16 @@ public class SettingsOfSeaWorld {
     }
 
     public void init(Context context) {
+        /*
+        todo а зачем контекст?
+         */
         this.context = context;
 
+        /*
+        todo а-а, понятно зачем ). вопросы
+            1. зачем сохранять в проперти контекст?
+            2. как брать ресурсы, если активити не доступна?
+         */
         numOfColumns = context.getResources().getInteger(R.integer.num_of_columns);
         numOfRows = context.getResources().getInteger(R.integer.num_of_rows);
         percentOfOrca = context.getResources().getInteger(R.integer.percent_of_orca);
