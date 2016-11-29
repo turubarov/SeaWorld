@@ -1,6 +1,7 @@
 package ru.turubarov.seaworld.model;
 
 import android.graphics.Point;
+import android.media.audiofx.BassBoost;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,6 +11,7 @@ import ru.turubarov.seaworld.factories.AnimalFactory;
 import ru.turubarov.seaworld.model.animals.Animal;
 import ru.turubarov.seaworld.model.animals.Orca;
 import ru.turubarov.seaworld.model.animals.Penguin;
+import ru.turubarov.seaworld.settings.SettingsOfSeaWorld;
 
 /**
  * Класс хранит ссылки на всех животных в двумерной матрице
@@ -37,23 +39,43 @@ public class AnimalMatrix {
         animalList = new ArrayList<Animal>();
     }
 
+    public AnimalFactory getAnimalFactory() {
+        return animalFactory;
+    }
+
     public ArrayList<Animal> fullMatrix() {
         /*
         todo есть идеи, как расставить в случайным образом за один обход, а не за 2 как сейчас?
+        да, есть. например, нам нужно расставить 75 животных на поле 10x15.
+        для каждого животного делаем следующее: генерируем два случайных числа
+        (например, x от 0 до 10 и y от 0 до 15), и проверяем значение animals[x][y].
+         если оно равно null, создаём животное и записываем в элемент animals[x][y].
+         если нет - снова генерируем пару из двух чисел.
+         минус данного метода в том, что при большом количестве животных он может работать
+         довольно долго (низка вероятность однаружения свободной клетки).
+         он хорошо подойдёт для большого поля с низой плотностью заполнения
+          метод, реализованный мной, работает за одинаковое время при любом количестве животных
          */
 
-        int maxTuxIndex = (int)(numOfColumns * numOfRows * 0.5);
-        int maxOrcaIndex = (int)(maxTuxIndex + numOfColumns * numOfRows * 0.05);
+        double shareOfPenguin = (double)SettingsOfSeaWorld.getInstance().getPercentOfPenguin() / 100;
+        double shareOfOrca = (double)SettingsOfSeaWorld.getInstance().getPercentOfOrca() / 100;
+        int maxTuxIndex = (int)(numOfColumns * numOfRows * shareOfPenguin);
+        int maxOrcaIndex = (int)(maxTuxIndex + numOfColumns * numOfRows * shareOfOrca);
 
         // заполняем матрицу с животными по порядку
+
         for (int i = 0; i < numOfColumns; i++) {
             for (int j = 0; j < numOfRows; j++) {
-                if (numOfRows * i + j < maxTuxIndex)
-                    animals[i][j] = animalFactory.createAnimal(AnimalTypes.TUX);
-                else if (numOfRows * i + j >= maxTuxIndex && numOfRows * i + j < maxOrcaIndex)
-                    animals[i][j] = animalFactory.createAnimal(AnimalTypes.ORCA);
-                else
+                try {
+                    if (numOfRows * i + j < maxTuxIndex)
+                        animals[i][j] = animalFactory.createAnimal(AnimalTypes.TUX);
+                    else if (numOfRows * i + j >= maxTuxIndex && numOfRows * i + j < maxOrcaIndex)
+                        animals[i][j] = animalFactory.createAnimal(AnimalTypes.ORCA);
+                    else
+                        animals[i][j] = null;
+                } catch (Exception e) {
                     animals[i][j] = null;
+                }
             }
         }
 
@@ -194,6 +216,7 @@ public class AnimalMatrix {
 
     public boolean putAnimal(Animal animal, Point position) {
         boolean result;
+        animal.setPosition(position.x, position.y);
         if (animals[position.x][position.y] == null) {
             animals[position.x][position.y] = animal;
             result = true;
@@ -201,5 +224,10 @@ public class AnimalMatrix {
             result = false;
         }
         return result;
+    }
+
+    public boolean hitPointOnRange(Point position) {
+        return ((position.x >= 0) && (position.x < numOfRows)
+                && (position.y >= 0) && (position.y  < numOfColumns));
     }
 }

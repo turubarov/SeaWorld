@@ -1,5 +1,6 @@
 package ru.turubarov.seaworld.view;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -28,13 +29,16 @@ public class SeaWorldActivity extends AppCompatActivity implements ISeaWorldView
 
     private ISeaWorldPresenter seaWorldPresenter;
 
+    private static Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sea_world);
 
-        SettingsOfSeaWorld.getInstance().init(this);
+        mContext = this;
+        SettingsOfSeaWorld.getInstance().init();
 
         numOfColumns = SettingsOfSeaWorld.getInstance().getNumOfColumns();
 
@@ -73,5 +77,9 @@ public class SeaWorldActivity extends AppCompatActivity implements ISeaWorldView
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         seaWorldPresenter.onStepListener();
+    }
+
+    public static Context getContext(){
+        return mContext;
     }
 }

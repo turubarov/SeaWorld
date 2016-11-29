@@ -17,7 +17,7 @@ public class AnimalFactory {
         this.matrix = matrix;
     }
 
-    public Animal createAnimal(AnimalTypes type) {
+    public Animal createAnimal(AnimalTypes type) throws Exception {
         Animal newAnimal;
         switch (type) {
             case ORCA:
@@ -29,9 +29,9 @@ public class AnimalFactory {
             default:
                 /*
                 TODO factory возврящает null... странный кейс. что знаешь про ecxeptions?
+                Переделал. Если тип животного неизвестен, выкидываю исключение
                  */
-                newAnimal = null;
-                break;
+                throw new Exception("Unknown type of animal");
         }
         return newAnimal;
     }

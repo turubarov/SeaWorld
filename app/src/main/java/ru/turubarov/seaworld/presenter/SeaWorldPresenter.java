@@ -12,6 +12,10 @@ public class SeaWorldPresenter implements ISeaWorldPresenter {
 
     /*
     todo общий вопрос про презентеры
+    Модель MVP нужна для отделения графического представления (Activity, Fragment)
+    от объектов данных.
+    Presenter - посредник между графическим представлением и моделью.
+    Он получает данные из модели и передаёт их представлению в удобной форме.
      */
     private ISeaWorld seaWorld;
     private ISeaWorldView seaWorldView;

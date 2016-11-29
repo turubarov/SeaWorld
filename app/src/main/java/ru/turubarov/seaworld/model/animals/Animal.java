@@ -3,6 +3,7 @@ package ru.turubarov.seaworld.model.animals;
 import android.graphics.Point;
 import java.util.Random;
 
+import ru.turubarov.seaworld.factories.AnimalFactory;
 import ru.turubarov.seaworld.model.AnimalMatrix;
 import ru.turubarov.seaworld.settings.SettingsOfSeaWorld;
 
@@ -19,6 +20,8 @@ public class Animal {
     AnimalMatrix matrix;
     /*
     todo у каждого Animal свой личный рандом... а нужно ли?
+    вообще-то, не нужно. но тогда мне придётся передавать его в конструктор или в сеттер
+    или, например, присваивать из синглтона
      */
     Random rand;
 
@@ -33,12 +36,13 @@ public class Animal {
 
         /*
         todo чтоб такого кода не было, можно воспользовать наследованием. соответственно, вопрос: как?
+        перенести инициализацию timeBetweenReproduction в классы-наследники
          */
-        if (this instanceof Penguin) {
+        /*if (this instanceof Penguin) {
             timeBetweenReproduction = SettingsOfSeaWorld.getInstance().getReproductionRateOfPenguin();
         } else if (this instanceof Orca) {
             timeBetweenReproduction = SettingsOfSeaWorld.getInstance().getReproductionRateOfOrca();
-        }
+        }*/
     }
 
     public void setPosition(int x, int y) {
@@ -48,23 +52,31 @@ public class Animal {
     public void move() {
         int offsetX, offsetY;
         Point newPosition;
+        int visibleRadius = SettingsOfSeaWorld.getInstance().getVisibleRadius();
         /*
         todo "magic numbers"... много "magic numbers"
+        избавился. отправил "magic numbers" в ресурсы
          */
         do {
-            offsetX = rand.nextInt(3) - 1;
-            offsetY = rand.nextInt(3) - 1;
+            offsetX = rand.nextInt(2 * visibleRadius + 1) - 1;
+            offsetY = rand.nextInt(2 * visibleRadius + 1) - 1;
             /*
             todo походит на range check, по идее эта логика должна быть в классе,
                  реализующем среду, в которой водятся животные, а не в самом животном
+
+                 в первой строчке я исключаю случай, когда животное перемещается в то же место
+                 где оно было. остальное - действительно range check
+                 кстати, быстрее будет передать два значения int вместо Point.
+                 сделал так для единообразия с остальными методами
              */
         } while ((offsetX == 0 && offsetY == 0)
-                || ((position.x + offsetX) < 0)
-                || ((position.x + offsetX) >= 10)
-                || ((position.y + offsetY) < 0)
-                || ((position.y + offsetY) >= 15));
-        newPosition = new Point(position.x + offsetX, position.y + offsetY);
+                || !matrix.hitPointOnRange(new Point(position.x + offsetX, position.x + offsetX)));
+        newPosition = new Point(position.x + offsetX, position.x + offsetX);
         matrix.moveAnimal(this,newPosition);
+    }
+
+    public Animal getChild() {
+        return null;
     }
 
     public Animal tryRespoduction() {
@@ -74,24 +86,24 @@ public class Animal {
          */
         Point positionForChild = matrix.searchPositionForChild(this);
         Animal newAnimal = null;
-        boolean result;
         if (positionForChild != null) {
             /*
             todo есть же factory
+            да, есть. переделал. кстати, заодно можно и от instanceof избавиться
              */
-            if (this instanceof Penguin) {
+            /*if (this instanceof Penguin) {
                 newAnimal = new Penguin(matrix);
             } else {
                 newAnimal = new Orca(matrix);
-            }
+            }*/
+            newAnimal = getChild();
             /*
             todo разрыв в логике: установка позиции а animal отделена от втыкания в матрицу
+            исправил
              */
-            newAnimal.setPosition(positionForChild.x, positionForChild.y);
-            matrix.putAnimal(newAnimal,positionForChild);
-            result = true;
+            //newAnimal.setPosition(positionForChild.x, positionForChild.y);
+            matrix.putAnimal(newAnimal, positionForChild);
         } else {
-            result = false;
         }
         return newAnimal;
     }
@@ -102,6 +114,10 @@ public class Animal {
         if (timeAfterReproduction > timeBetweenReproduction) {
             tryRespoduction();
         }
+    }
+
+    public int getDrawableResourceId() {
+        return 0;
     }
 
 }

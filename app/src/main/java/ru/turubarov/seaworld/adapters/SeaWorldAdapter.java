@@ -39,7 +39,7 @@ public class SeaWorldAdapter extends BaseAdapter {
         TODO зачем у настроек просить размеры? массив animals разве не дает эту информацию?
          */
         this.numOfColumns = SettingsOfSeaWorld.getInstance().getNumOfColumns();
-        this.numOfRows = SettingsOfSeaWorld.getInstance().getNumOfRows();
+        this.numOfRows =  SettingsOfSeaWorld.getInstance().getNumOfRows();
     }
 
     public int getCount() {
@@ -57,6 +57,7 @@ public class SeaWorldAdapter extends BaseAdapter {
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView;
+        Animal animal;
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
             imageView = new ImageView(context);
@@ -65,16 +66,30 @@ public class SeaWorldAdapter extends BaseAdapter {
         } else {
             imageView = (ImageView) convertView;
         }
+
         /*
         todo 1. вроде ж специально метод getItem сделал для такой лыжы "animals[position % numOfColumns][(int)(position / numOfColumns)]"...
+        исправил
         todo 2. почему instanceof? есть альтернативы?
+        согласен. instanceof - это плохо. хотя бы потому, что он довольно медленный.
+        альтернатива - использовать полиморфизм языка Java. заодно реализуется todo 3.
         todo 3. от этого "свича" вообще можно избавиться. есть мысли как?
+        да, есть. избавляюсь.
          */
+
+        /*
         if (animals[position % numOfColumns][(int)(position / numOfColumns)] instanceof Orca)
 
             imageView.setImageResource(R.drawable.orca);
         else if (animals[position % numOfColumns][(int)(position / numOfColumns)] instanceof Penguin)
             imageView.setImageResource(R.drawable.tux);
+        else
+            imageView.setImageResource(0);
+         */
+
+        animal = (Animal)(getItem(position));
+        if (animal != null)
+            imageView.setImageResource(animal.getDrawableResourceId());
         else
             imageView.setImageResource(0);
 

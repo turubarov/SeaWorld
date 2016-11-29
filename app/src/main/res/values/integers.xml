@@ -7,4 +7,5 @@
     <integer name="reproduction_rate_of_orca">8</integer>
     <integer name="reproduction_rate_of_penguin">3</integer>
     <integer name="live_without_eat">3</integer>
+    <integer name="visible_raduis">1</integer>
 </resources>
