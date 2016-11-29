@@ -10,6 +10,9 @@ import ru.turubarov.seaworld.view.ISeaWorldView;
 
 public class SeaWorldPresenter implements ISeaWorldPresenter {
 
+    /*
+    todo общий вопрос про презентеры
+     */
     private ISeaWorld seaWorld;
     private ISeaWorldView seaWorldView;
 

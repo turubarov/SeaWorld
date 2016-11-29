@@ -38,6 +38,10 @@ public class AnimalMatrix {
     }
 
     public ArrayList<Animal> fullMatrix() {
+        /*
+        todo есть идеи, как расставить в случайным образом за один обход, а не за 2 как сейчас?
+         */
+
         int maxTuxIndex = (int)(numOfColumns * numOfRows * 0.5);
         int maxOrcaIndex = (int)(maxTuxIndex + numOfColumns * numOfRows * 0.05);
 
@@ -120,6 +124,9 @@ public class AnimalMatrix {
         return result;
     }
 
+    /*
+    todo наличие логики движения живатных приведет к сильному разростанию класса при увеличении числа видов
+     */
     public Penguin searchFood(Orca orca) {
         int curX = orca.position.x;
         int curY = orca.position.y;

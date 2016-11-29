@@ -15,6 +15,11 @@ public class SeaWorld implements ISeaWorld {
     private int numOfColumns;
     private int numOfRows;
 
+    /*
+    todo не очень понятно зачем нужно разделение SeaWorld и AnimalMatrix,
+         если была идея вынести часть лоики в подкласс, то оня вся туда ушла и AnimalMatrix по факту
+         стал "миром", а SeaWorld просто его содержит и выполняет шаги для животных
+     */
     private AnimalMatrix animalMatrix;
     private ArrayList<Animal> animalList;
 
