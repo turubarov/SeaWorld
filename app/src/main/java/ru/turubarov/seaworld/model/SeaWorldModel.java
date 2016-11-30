@@ -1,7 +1,6 @@
 package ru.turubarov.seaworld.model;
 
 import android.graphics.Point;
-import android.media.audiofx.BassBoost;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -9,8 +8,6 @@ import java.util.Random;
 import ru.turubarov.seaworld.enums.AnimalTypes;
 import ru.turubarov.seaworld.factories.AnimalFactory;
 import ru.turubarov.seaworld.model.animals.Animal;
-import ru.turubarov.seaworld.model.animals.Orca;
-import ru.turubarov.seaworld.model.animals.Penguin;
 import ru.turubarov.seaworld.settings.SettingsOfSeaWorld;
 
 /**
@@ -19,7 +16,7 @@ import ru.turubarov.seaworld.settings.SettingsOfSeaWorld;
  * Created by Александр on 25.11.2016.
  */
 
-public class AnimalMatrix {
+public class SeaWorldModel implements ISeaWorldModel {
 
     private AnimalFactory animalFactory;
     public Animal[][] animals;
@@ -29,14 +26,14 @@ public class AnimalMatrix {
 
     private ArrayList<Animal> animalList;
 
-    public AnimalMatrix(int numOfColumns, int numOfRows) {
+    public SeaWorldModel(int numOfColumns, int numOfRows) {
         this.numOfColumns = numOfColumns;
         this.numOfRows = numOfRows;
 
         animals = new Animal[this.numOfColumns][this.numOfRows];
         animalFactory = new AnimalFactory(this);
 
-        animalList = new ArrayList<Animal>();
+        animalList = fullMatrix();
     }
 
     public AnimalFactory getAnimalFactory() {
@@ -54,7 +51,7 @@ public class AnimalMatrix {
          минус данного метода в том, что при большом количестве животных он может работать
          довольно долго (низка вероятность однаружения свободной клетки).
          он хорошо подойдёт для большого поля с низой плотностью заполнения
-          метод, реализованный мной, работает за одинаковое время при любом количестве животных
+          метод, реализованный мной, работает за одинаковое время при любой плотности животных
          */
 
         double shareOfPenguin = (double)SettingsOfSeaWorld.getInstance().getPercentOfPenguin() / 100;
@@ -97,7 +94,7 @@ public class AnimalMatrix {
     }
 
     public ArrayList<Animal> getAnimalList() {
-        animalList.clear();
+        animalList = new ArrayList<Animal>();
         // обходим всю матрицу и находим всех несъеденных животных
         for (int i = 0; i < numOfColumns; i++) {
             for (int j = 0; j < numOfRows; j++) {
@@ -126,7 +123,7 @@ public class AnimalMatrix {
         return result;
     }
 
-    public boolean moveAnimal(Animal animal, Point newPosition) {
+    public boolean moveAnimal(Animal animal, Point newPosition, boolean checkFree) {
         int newX = newPosition.x;
         int newY = newPosition.y;
         int curX = animal.position.x;
@@ -134,7 +131,7 @@ public class AnimalMatrix {
         boolean result;
 
         // проверяем, свободно ли место для перемещения
-        if (animals[newX][newY] == null) { // если да, перемещаем
+        if (animals[newX][newY] == null || !checkFree) { // если да, перемещаем
             animals[newX][newY] = animal;
             animals[curX][curY] = null;
             animal.setPosition(newX, newY);
@@ -148,53 +145,8 @@ public class AnimalMatrix {
 
     /*
     todo наличие логики движения живатных приведет к сильному разростанию класса при увеличении числа видов
+    согласен. перенёс логику в класс животного
      */
-    public Penguin searchFood(Orca orca) {
-        int curX = orca.position.x;
-        int curY = orca.position.y;
-        ArrayList<Penguin> foods = new ArrayList<Penguin>();
-        Random rand = new Random();
-        // в цикле ищем пингвина на съедение неподалёку от косатки orca
-        for (int j = 0; j < 3; j++) {
-            for (int k = 0; k < 3; k++) {
-                if ((j != 1 || k != 1)
-                        && curX + j - 1 >= 0 && curX + j - 1 < numOfColumns
-                        && curY + k - 1 >= 0 && curY + k - 1 < numOfRows) {
-                    if (animals[curX + j - 1][curY + k - 1] instanceof Penguin) {
-                        foods.add((Penguin)animals[curX + j - 1][curY + k - 1]);
-                    }
-                }
-            }
-        }
-        // если пингвины неподалёку найдены, выбираем случайного
-        if (foods.size() > 0) {
-            return foods.get(rand.nextInt(foods.size()));
-        }
-        return null;
-    }
-
-    public boolean searchAndEatFood(Orca orca) {
-        int newX;
-        int newY;
-        int curX = orca.position.x;
-        int curY = orca.position.y;
-        boolean result;
-        Penguin tuxForEat = searchFood(orca);
-        // перемещаем касатку на место съеденного пингвина
-        if (tuxForEat != null) {
-            newX = tuxForEat.position.x;
-            newY = tuxForEat.position.y;
-            animals[newX][newY] = orca;
-            animals[curX][curY] = null;
-            tuxForEat.setPosition(curX, curY);
-            orca.setPosition(newX, newY);
-            tuxForEat.isDead = true;
-            result = true;
-        } else { // если кушать нечего, то ничего не делаем
-            result = false;
-        }
-        return result;
-    }
 
     public Point searchPositionForChild(Animal animal) {
         int curX = animal.position.x;
@@ -226,8 +178,30 @@ public class AnimalMatrix {
         return result;
     }
 
-    public boolean hitPointOnRange(Point position) {
-        return ((position.x >= 0) && (position.x < numOfRows)
-                && (position.y >= 0) && (position.y  < numOfColumns));
+    public Animal getAnimal(int x, int y) {
+        return animals[x][y];
+    }
+
+    public boolean hitPointOnRange(int x, int y) {
+        return (x >= 0 && x < numOfColumns
+                && y >= 0 && y  < numOfRows);
+    }
+
+    @Override
+    public void fullSeaWorld() {
+        animalList = fullMatrix();
+    }
+
+    @Override
+    public void stepOfSeaWorld() {
+        for (Animal animal : animalList) {
+            animal.step();
+        }
+        animalList = getAnimalList();
+    }
+
+    @Override
+    public Animal[][] getAnimalMatrix() {
+        return animals;
     }
 }

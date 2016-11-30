@@ -2,7 +2,7 @@ package ru.turubarov.seaworld.model.animals;
 
 import ru.turubarov.seaworld.R;
 import ru.turubarov.seaworld.enums.AnimalTypes;
-import ru.turubarov.seaworld.model.AnimalMatrix;
+import ru.turubarov.seaworld.model.SeaWorldModel;
 import ru.turubarov.seaworld.settings.SettingsOfSeaWorld;
 
 /**
@@ -10,7 +10,7 @@ import ru.turubarov.seaworld.settings.SettingsOfSeaWorld;
  */
 
 public class Penguin  extends Animal {
-    public Penguin(AnimalMatrix matrix) {
+    public Penguin(SeaWorldModel matrix) {
         super(matrix);
         timeBetweenReproduction = SettingsOfSeaWorld.getInstance().getReproductionRateOfPenguin();
     }

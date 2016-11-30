@@ -1,7 +1,6 @@
 package ru.turubarov.seaworld.presenter;
 
-import ru.turubarov.seaworld.model.ISeaWorld;
-import ru.turubarov.seaworld.model.SeaWorld;
+import ru.turubarov.seaworld.model.ISeaWorldModel;
 import ru.turubarov.seaworld.view.ISeaWorldView;
 
 /**
@@ -17,11 +16,11 @@ public class SeaWorldPresenter implements ISeaWorldPresenter {
     Presenter - посредник между графическим представлением и моделью.
     Он получает данные из модели и передаёт их представлению в удобной форме.
      */
-    private ISeaWorld seaWorld;
+    private ISeaWorldModel seaWorldModel;
     private ISeaWorldView seaWorldView;
 
-    public SeaWorldPresenter(ISeaWorld seaWorld, ISeaWorldView seaWorldView ) {
-        this.seaWorld = seaWorld;
+    public SeaWorldPresenter(ISeaWorldModel seaWorld, ISeaWorldView seaWorldView ) {
+        this.seaWorldModel = seaWorld;
         this.seaWorldView = seaWorldView;
         this.seaWorldView.setSeaWorldData(seaWorld.getAnimalMatrix());
     }
@@ -29,13 +28,13 @@ public class SeaWorldPresenter implements ISeaWorldPresenter {
 
     @Override
     public void onRestartListener() {
-        seaWorld.fullSeaWorld();
+        seaWorldModel.fullSeaWorld();
         seaWorldView.refreshData();
     }
 
     @Override
     public void onStepListener() {
-        seaWorld.stepOfSeaWorld();
+        seaWorldModel.stepOfSeaWorld();
         seaWorldView.refreshData();
     }
 }

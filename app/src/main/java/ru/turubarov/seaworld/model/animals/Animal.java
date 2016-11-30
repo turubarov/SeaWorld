@@ -3,8 +3,7 @@ package ru.turubarov.seaworld.model.animals;
 import android.graphics.Point;
 import java.util.Random;
 
-import ru.turubarov.seaworld.factories.AnimalFactory;
-import ru.turubarov.seaworld.model.AnimalMatrix;
+import ru.turubarov.seaworld.model.SeaWorldModel;
 import ru.turubarov.seaworld.settings.SettingsOfSeaWorld;
 
 /**
@@ -17,7 +16,7 @@ public class Animal {
     protected int timeAfterReproduction;
     protected int timeBetweenReproduction;
 
-    AnimalMatrix matrix;
+    SeaWorldModel matrix;
     /*
     todo у каждого Animal свой личный рандом... а нужно ли?
     вообще-то, не нужно. но тогда мне придётся передавать его в конструктор или в сеттер
@@ -27,7 +26,7 @@ public class Animal {
 
     public boolean isDead;
 
-    public Animal(AnimalMatrix matrix) {
+    public Animal(SeaWorldModel matrix) {
         this.matrix = matrix;
         position = new Point();
          timeAfterReproduction = 0;
@@ -66,13 +65,11 @@ public class Animal {
 
                  в первой строчке я исключаю случай, когда животное перемещается в то же место
                  где оно было. остальное - действительно range check
-                 кстати, быстрее будет передать два значения int вместо Point.
-                 сделал так для единообразия с остальными методами
              */
         } while ((offsetX == 0 && offsetY == 0)
-                || !matrix.hitPointOnRange(new Point(position.x + offsetX, position.x + offsetX)));
-        newPosition = new Point(position.x + offsetX, position.x + offsetX);
-        matrix.moveAnimal(this,newPosition);
+                || !matrix.hitPointOnRange(position.x + offsetX, position.y + offsetY));
+        newPosition = new Point(position.x + offsetX, position.y + offsetY);
+        matrix.moveAnimal(this, newPosition, true);
     }
 
     public Animal getChild() {
@@ -103,10 +100,12 @@ public class Animal {
              */
             //newAnimal.setPosition(positionForChild.x, positionForChild.y);
             matrix.putAnimal(newAnimal, positionForChild);
-        } else {
-        }
+        } /*else {
+        }*/
         return newAnimal;
     }
+
+
 
     public void step() {
         timeAfterReproduction++;

@@ -10,7 +10,7 @@ import android.widget.GridView;
 
 import ru.turubarov.seaworld.R;
 import ru.turubarov.seaworld.adapters.SeaWorldAdapter;
-import ru.turubarov.seaworld.model.SeaWorld;
+import ru.turubarov.seaworld.model.SeaWorldModel;
 import ru.turubarov.seaworld.model.animals.Animal;
 import ru.turubarov.seaworld.presenter.ISeaWorldPresenter;
 import ru.turubarov.seaworld.presenter.SeaWorldPresenter;
@@ -24,6 +24,7 @@ public class SeaWorldActivity extends AppCompatActivity implements ISeaWorldView
     private Button restartButton;
 
     private int numOfColumns;
+    private int numOfRows;
 
     private SeaWorldAdapter adapter;
 
@@ -41,6 +42,7 @@ public class SeaWorldActivity extends AppCompatActivity implements ISeaWorldView
         SettingsOfSeaWorld.getInstance().init();
 
         numOfColumns = SettingsOfSeaWorld.getInstance().getNumOfColumns();
+        numOfRows = SettingsOfSeaWorld.getInstance().getNumOfRows();
 
         seaWorldGrid = (GridView) findViewById(R.id.seaWorldGrid);
         seaWorldGrid.setNumColumns(numOfColumns);
@@ -51,7 +53,7 @@ public class SeaWorldActivity extends AppCompatActivity implements ISeaWorldView
         restartButton = (Button) findViewById(R.id.restartButton);
         restartButton.setOnClickListener(this);
 
-        seaWorldPresenter = new SeaWorldPresenter(new SeaWorld(), this);
+        seaWorldPresenter = new SeaWorldPresenter(new SeaWorldModel(numOfColumns, numOfRows), this);
     }
 
     @Override

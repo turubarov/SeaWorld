@@ -1,7 +1,7 @@
 package ru.turubarov.seaworld.factories;
 
 import ru.turubarov.seaworld.enums.AnimalTypes;
-import ru.turubarov.seaworld.model.AnimalMatrix;
+import ru.turubarov.seaworld.model.SeaWorldModel;
 import ru.turubarov.seaworld.model.animals.Animal;
 import ru.turubarov.seaworld.model.animals.Orca;
 import ru.turubarov.seaworld.model.animals.Penguin;
@@ -11,9 +11,9 @@ import ru.turubarov.seaworld.model.animals.Penguin;
  */
 
 public class AnimalFactory {
-    private AnimalMatrix matrix;
+    private SeaWorldModel matrix;
 
-    public AnimalFactory(AnimalMatrix matrix) {
+    public AnimalFactory(SeaWorldModel matrix) {
         this.matrix = matrix;
     }
 

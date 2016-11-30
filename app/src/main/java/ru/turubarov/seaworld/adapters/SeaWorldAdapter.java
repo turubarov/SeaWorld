@@ -77,16 +77,6 @@ public class SeaWorldAdapter extends BaseAdapter {
         да, есть. избавляюсь.
          */
 
-        /*
-        if (animals[position % numOfColumns][(int)(position / numOfColumns)] instanceof Orca)
-
-            imageView.setImageResource(R.drawable.orca);
-        else if (animals[position % numOfColumns][(int)(position / numOfColumns)] instanceof Penguin)
-            imageView.setImageResource(R.drawable.tux);
-        else
-            imageView.setImageResource(0);
-         */
-
         animal = (Animal)(getItem(position));
         if (animal != null)
             imageView.setImageResource(animal.getDrawableResourceId());
